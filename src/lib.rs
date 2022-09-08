@@ -1,3 +1,5 @@
+pub mod math;
+
 use std::io::Read;
 
 use xml::{EventReader, reader::XmlEvent};
