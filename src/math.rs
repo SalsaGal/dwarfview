@@ -10,3 +10,14 @@ impl Pos {
         Self { x, y }
     }
 }
+
+pub struct Rect {
+    pub a: Pos,
+    pub b: Pos,
+}
+
+impl Rect {
+    pub fn new(a: Pos, b: Pos) -> Self {
+        Self { a, b }
+    }
+}
