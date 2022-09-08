@@ -7,8 +7,8 @@ pub struct Region {
     pub altname: String,
 }
 
-impl Region {
-    pub fn from_file<T: Read>(reader: T) -> Self {
+impl<T> From<T> for Region where T: Read {
+    fn from(reader: T) -> Self {
         let parser = EventReader::new(reader);
         let mut tags = Vec::new();
 
