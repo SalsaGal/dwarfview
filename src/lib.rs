@@ -2,14 +2,17 @@ pub mod math;
 
 use std::io::Read;
 
-use xml::{EventReader, reader::XmlEvent};
+use xml::{reader::XmlEvent, EventReader};
 
 pub struct Region {
     pub name: String,
     pub altname: String,
 }
 
-impl<T> From<T> for Region where T: Read {
+impl<T> From<T> for Region
+where
+    T: Read,
+{
     fn from(reader: T) -> Self {
         let parser = EventReader::new(reader);
         let mut tags = Vec::new();
@@ -35,7 +38,7 @@ impl<T> From<T> for Region where T: Read {
                         }
                     }
                 }
-                _ => {},
+                _ => {}
             }
         }
 
