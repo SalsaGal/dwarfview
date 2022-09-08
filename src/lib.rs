@@ -4,6 +4,7 @@ use xml::{EventReader, reader::XmlEvent};
 
 pub struct Region {
     pub name: String,
+    pub altname: String,
 }
 
 impl Region {
@@ -12,6 +13,7 @@ impl Region {
         let mut tags = Vec::new();
 
         let mut name = None;
+        let mut altname = None;
 
         for element in parser {
             match element {
@@ -25,6 +27,8 @@ impl Region {
                 Ok(XmlEvent::Characters(s)) => {
                     if tags == vec!["df_world", "name"] {
                         name = Some(s);
+                    } else if tags == vec!["df_world", "altname"] {
+                        altname = Some(s);
                     }
                 }
                 _ => {},
@@ -33,6 +37,7 @@ impl Region {
 
         Self {
             name: name.unwrap(),
+            altname: altname.unwrap(),
         }
     }
 }
