@@ -27,10 +27,12 @@ impl<T> From<T> for Region where T: Read {
                     tags.pop();
                 }
                 Ok(XmlEvent::Characters(s)) => {
-                    if tags == vec!["df_world", "name"] {
-                        name = Some(s);
-                    } else if tags == vec!["df_world", "altname"] {
-                        altname = Some(s);
+                    if tags[0] == "df_world" {
+                        match &*tags[1] {
+                            "name" => name = Some(s),
+                            "altname" => altname = Some(s),
+                            _ => {}
+                        }
                     }
                 }
                 _ => {},
