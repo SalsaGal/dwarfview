@@ -9,20 +9,21 @@ pub struct Region {
 impl Region {
     pub fn from_file<T: Read>(reader: T) -> Self {
         let parser = EventReader::new(reader);
-        let mut parsing_state = ParsingState::None;
+        let mut tags = Vec::new();
 
         let mut name = None;
 
         for element in parser {
             match element {
                 Ok(XmlEvent::StartElement { name, .. }) => {
-                    match &*name.to_string() {
-                        "name" => parsing_state = ParsingState::Name,
-                        _ => {}
-                    }
+                    tags.push(name.to_string());
+                }
+                Ok(XmlEvent::EndElement { name }) => {
+                    assert_eq!(*tags.last().unwrap(), name.to_string());
+                    tags.pop();
                 }
                 Ok(XmlEvent::Characters(s)) => {
-                    if matches!(parsing_state, ParsingState::Name) {
+                    if tags == vec!["df_world", "name"] {
                         name = Some(s);
                     }
                 }
@@ -34,9 +35,4 @@ impl Region {
             name: name.unwrap(),
         }
     }
-}
-
-enum ParsingState {
-    Name,
-    None,
 }
